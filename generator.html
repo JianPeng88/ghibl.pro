@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉卜力风格转换器 - 让你的照片变成吉卜力动画风格</title>
+    <meta name="description" content="使用我们的吉卜力风格转换器，将您的普通照片转换成宫崎骏动画风格的艺术品。选择多种风格，包括龙猫、千与千寻、哈尔的移动城堡等。">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/generator.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- 页眉 -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="吉卜力风格转换器">
+            <h1>吉卜力风格转换器</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="generator.html" class="active">风格转换</a></li>
+                <li><a href="gallery.html">作品展示</a></li>
+                <li><a href="about.html">关于我们</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main>
+        <section class="generator-section">
+            <div class="section-header">
+                <h2>吉卜力风格转换器</h2>
+                <p>上传您的照片，选择喜欢的吉卜力风格，让AI将您的照片变成宫崎骏动画的艺术品！</p>
+            </div>
+
+            <!-- 生成器主界面 -->
+            <div class="generator-container">
+                <!-- 上传区域 -->
+                <div class="upload-container">
+                    <h3>第一步：上传照片</h3>
+                    <div class="upload-area" id="uploadArea">
+                        <div id="uploadPlaceholder">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>拖放照片到这里或</p>
+                            <button id="uploadButton" class="btn primary-btn">选择照片</button>
+                            <input type="file" id="imageUpload" accept="image/*" hidden>
+                        </div>
+                        <div id="imagePreviewContainer" style="display: none;">
+                            <img id="imagePreview" src="" alt="预览图">
+                            <button id="removeImage" class="btn secondary-btn">移除照片</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 示例图片 -->
+                    <div class="sample-images">
+                        <h4>或使用示例图片：</h4>
+                        <div class="sample-grid">
+                            <img src="images/sample1.jpg" alt="示例图片1" class="sample-img" data-sample="1">
+                            <img src="images/sample2.jpg" alt="示例图片2" class="sample-img" data-sample="2">
+                            <img src="images/sample3.jpg" alt="示例图片3" class="sample-img" data-sample="3">
+                            <img src="images/sample4.jpg" alt="示例图片4" class="sample-img" data-sample="4">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 风格选择 -->
+                <div class="style-container">
+                    <h3>第二步：选择吉卜力风格</h3>
+                    <div class="style-grid">
+                        <div class="style-card" data-style="totoro">
+                            <img src="images/style-totoro.jpg" alt="龙猫风格">
+                            <div class="style-info">
+                                <h4>龙猫</h4>
+                                <p>温暖、治愈的自然风格</p>
+                            </div>
+                        </div>
+                        <div class="style-card" data-style="spirited">
+                            <img src="images/style-spirited.jpg" alt="千与千寻风格">
+                            <div class="style-info">
+                                <h4>千与千寻</h4>
+                                <p>神秘、奇幻的场景风格</p>
+                            </div>
+                        </div>
+                        <div class="style-card" data-style="howl">
+                            <img src="images/style-howl.jpg" alt="哈尔的移动城堡风格">
+                            <div class="style-info">
+                                <h4>哈尔的移动城堡</h4>
+                                <p>浪漫、蒸汽朋克风格</p>
+                            </div>
+                        </div>
+                        <div class="style-card" data-style="mononoke">
+                            <img src="images/style-mononoke.jpg" alt="幽灵公主风格">
+                            <div class="style-info">
+                                <h4>幽灵公主</h4>
+                                <p>自然、原始的森林风格</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 风格强度选择 -->
+                    <div class="style-strength">
+                        <h4>风格强度：<span id="strengthValue">75%</span></h4>
+                        <input type="range" id="styleStrength" min="20" max="100" value="75" step="5">
+                        <div class="strength-labels">
+                            <span>轻微</span>
+                            <span>中等</span>
+                            <span>强烈</span>
+                        </div>
+                    </div>
+
+                    <!-- 生成按钮 -->
+                    <button id="generateButton" class="btn primary-btn" disabled>
+                        <i class="fas fa-magic"></i> 生成吉卜力风格照片
+                    </button>
+                </div>
+            </div>
+
+            <!-- 处理中状态 -->
+            <div class="processing-container" style="display: none;">
+                <div class="processing-animation">
+                    <img src="images/loading-animation.gif" alt="处理中">
+                </div>
+                <h3>AI正在施展魔法...</h3>
+                <p>正在将您的照片转换为吉卜力风格，请稍等片刻...</p>
+            </div>
+
+            <!-- 结果展示 -->
+            <div class="results-container" style="display: none;">
+                <h3>您的吉卜力风格照片已生成！</h3>
+                
+                <div class="result-comparison">
+                    <div class="result-original">
+                        <h4>原始照片</h4>
+                        <img id="resultOriginal" src="" alt="原始照片">
+                    </div>
+                    <div class="result-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="result-transformed">
+                        <h4>吉卜力风格</h4>
+                        <img id="resultTransformed" src="" alt="吉卜力风格照片">
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button id="downloadButton" class="btn primary-btn">
+                        <i class="fas fa-download"></i> 下载
+                    </button>
+                    <button id="shareButton" class="btn secondary-btn">
+                        <i class="fas fa-share-alt"></i> 分享
+                    </button>
+                    <button id="addToGalleryButton" class="btn secondary-btn">
+                        <i class="fas fa-plus"></i> 添加到作品展示
+                    </button>
+                    <button id="createNewButton" class="btn primary-btn">
+                        <i class="fas fa-sync"></i> 创建新作品
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户体验 -->
+        <section class="testimonial-section">
+            <div class="section-header">
+                <h2>用户体验</h2>
+                <p>看看其他人是如何使用吉卜力风格转换器的</p>
+            </div>
+            <div class="testimonial-container">
+                <div class="testimonial">
+                    <div class="testimonial-image">
+                        <img src="images/testimonial1.jpg" alt="用户作品1">
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"我的宠物现在看起来就像是龙猫电影中的角色！效果太神奇了，我的朋友们都很喜欢。"</p>
+                        <div class="testimonial-author">
+                            <img src="images/user1.jpg" alt="李小明">
+                            <div>
+                                <h4>李小明</h4>
+                                <p>宠物摄影师</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-image">
+                        <img src="images/testimonial2.jpg" alt="用户作品2">
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"我用这个工具把我的毕业照变成了哈尔的移动城堡风格，现在它成了我最珍贵的回忆之一。"</p>
+                        <div class="testimonial-author">
+                            <img src="images/user2.jpg" alt="张雨晴">
+                            <div>
+                                <h4>张雨晴</h4>
+                                <p>大学生</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见问题 -->
+        <section class="faq-section">
+            <div class="section-header">
+                <h2>常见问题</h2>
+                <p>关于吉卜力风格转换器的常见问题解答</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>如何获得最佳转换效果？</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>为获得最佳效果，请上传清晰的照片，避免过于复杂的背景。调整风格强度以获得最适合您照片的效果。不同的吉卜力风格适合不同类型的照片，例如自然风景适合龙猫风格，而城市场景则更适合哈尔的移动城堡风格。</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>我可以使用生成的图片做什么？</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>您可以免费将生成的图片用于个人用途，如社交媒体分享、个人艺术项目等。但如需用于商业目的，请联系我们获取许可。请注意，吉卜力工作室拥有其原创角色和艺术风格的版权。</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>转换过程需要多长时间？</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>转换过程通常需要10-30秒，具体取决于您的网络速度和服务器负载。在高峰期可能需要更长的时间。我们建议在等待期间不要关闭页面。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo-white.png" alt="吉卜力风格转换器">
+                <h2>吉卜力风格转换器</h2>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>导航</h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="generator.html">风格转换</a></li>
+                        <li><a href="gallery.html">作品展示</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助</h3>
+                    <ul>
+                        <li><a href="#">使用教程</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>关注我们</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-bilibili"></i></a>
+                        <a href="#"><i class="fab fa-douyin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 吉卜力风格转换器. 保留所有权利。本网站仅供学习和个人使用。</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+<body class="generator-page">
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="吉卜力风格转换器">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="gallery.html">作品展示</a></li>
+                    <li><a href="generator.html" class="active">开始创作</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="generator-section">
+            <div class="container">
+                <h1 class="page-title">将照片转换为吉卜力风格</h1>
+                <p class="page-description">上传你的照片，选择喜爱的吉卜力风格，创造专属艺术作品</p>
+                
+                <div class="generator-container">
+                    <div class="generator-left">
+                        <div class="upload-container">
+                            <h2>上传照片</h2>
+                            <div class="upload-area" id="uploadArea">
+                                <input type="file" id="imageUpload" name="imageUpload" accept="image/*" style="display: none;">
+                                <div class="upload-placeholder" id="uploadPlaceholder">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>点击或拖放照片到这里</p>
+                                    <span class="small-text">支持JPG、PNG格式，最大10MB</span>
+                                    <button type="button" class="btn btn-upload" id="uploadButton">选择图片</button>
+                                </div>
+                                <div class="image-preview" id="imagePreviewContainer" style="display: none;">
+                                    <img src="#" alt="预览图" id="imagePreview">
+                                    <button type="button" class="btn btn-small remove-image" id="removeImage">
+                                        <i class="fas fa-times"></i> 移除
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="sample-images">
+                                <h3>或使用示例图片</h3>
+                                <div class="sample-grid">
+                                    <img src="images/sample1.jpg" alt="示例图片1" class="sample-img" data-sample="1">
+                                    <img src="images/sample2.jpg" alt="示例图片2" class="sample-img" data-sample="2">
+                                    <img src="images/sample3.jpg" alt="示例图片3" class="sample-img" data-sample="3">
+                                    <img src="images/sample4.jpg" alt="示例图片4" class="sample-img" data-sample="4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="generator-right">
+                        <div class="style-selector-container">
+                            <h2>选择吉卜力风格</h2>
+                            <div class="style-grid">
+                                <div class="style-card" data-style="totoro">
+                                    <div class="style-image">
+                                        <img src="images/style-totoro.jpg" alt="龙猫风格">
+                                    </div>
+                                    <div class="style-info">
+                                        <h3>龙猫</h3>
+                                        <p>温馨自然的色调，明亮柔和</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="style-card" data-style="spirited">
+                                    <div class="style-image">
+                                        <img src="images/style-spirited.jpg" alt="千与千寻风格">
+                                    </div>
+                                    <div class="style-info">
+                                        <h3>千与千寻</h3>
+                                        <p>神秘奇幻的氛围，绚丽色彩</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="style-card" data-style="howl">
+                                    <div class="style-image">
+                                        <img src="images/style-howl.jpg" alt="哈尔的移动城堡风格">
+                                    </div>
+                                    <div class="style-info">
+                                        <h3>哈尔的移动城堡</h3>
+                                        <p>奇幻与蒸汽朋克融合的风格</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="style-card" data-style="mononoke">
+                                    <div class="style-image">
+                                        <img src="images/style-mononoke.jpg" alt="幽灵公主风格">
+                                    </div>
+                                    <div class="style-info">
+                                        <h3>幽灵公主</h3>
+                                        <p>自然与神秘交织的深沉风格</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="style-options">
+                                <div class="form-group">
+                                    <label for="styleStrength">风格强度: <span id="strengthValue">75%</span></label>
+                                    <input type="range" id="styleStrength" min="0" max="100" value="75" class="slider">
+                                    <div class="slider-labels">
+                                        <span>保留更多原图细节</span>
+                                        <span>更强的吉卜力风格</span>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-primary btn-block" id="generateButton" disabled>
+                                    <i class="fas fa-magic"></i> 开始转换
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 处理中状态 -->
+                <div class="processing-container" style="display: none;">
+                    <div class="processing-animation">
+                        <div class="totoro-loading">
+                            <img src="images/totoro-loading.gif" alt="加载中">
+                        </div>
+                    </div>
+                    <h2>吉卜力魔法正在生效...</h2>
+                    <p>我们的AI正在努力将你的照片转换为吉卜力风格，请稍等片刻</p>
+                </div>
+                
+                <!-- 结果显示区域 -->
+                <div class="results-container" style="display: none;">
+                    <h2>转换完成！</h2>
+                    <div class="results-comparison">
+                        <div class="result-original">
+                            <h3>原图</h3>
+                            <div class="result-image-container">
+                                <img src="#" alt="原始照片" id="resultOriginal">
+                            </div>
+                        </div>
+                        <div class="result-transformed">
+                            <h3>吉卜力风格</h3>
+                            <div class="result-image-container">
+                                <img src="#" alt="转换后的照片" id="resultTransformed">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-actions">
+                        <button type="button" class="btn btn-primary" id="downloadButton">
+                            <i class="fas fa-download"></i> 下载作品
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="shareButton">
+                            <i class="fas fa-share-alt"></i> 分享
+                        </button>
+                        <button type="button" class="btn btn-outline" id="addToGalleryButton">
+                            <i class="fas fa-images"></i> 添加到作品展示
+                        </button>
+                        <button type="button" class="btn btn-outline" id="createNewButton">
+                            <i class="fas fa-plus"></i> 创建新作品
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 其他作品推荐 -->
+        <section class="related-works">
+            <div class="container">
+                <h2>其他精彩作品</h2>
+                <div class="related-grid">
+                    <div class="related-item">
+                        <img src="images/gallery1.jpg" alt="相关作品1">
+                        <div class="overlay">
+                            <p>龙猫风格作品</p>
+                        </div>
+                    </div>
+                    <div class="related-item">
+                        <img src="images/gallery2.jpg" alt="相关作品2">
+                        <div class="overlay">
+                            <p>千与千寻风格作品</p>
+                        </div>
+                    </div>
+                    <div class="related-item">
+                        <img src="images/gallery3.jpg" alt="相关作品3">
+                        <div class="overlay">
+                            <p>哈尔移动城堡风格作品</p>
+                        </div>
+                    </div>
+                    <div class="related-item">
+                        <img src="images/gallery4.jpg" alt="相关作品4">
+                        <div class="overlay">
+                            <p>幽灵公主风格作品</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a href="gallery.html" class="btn btn-secondary">查看更多作品</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-white.png" alt="吉卜力风格转换器">
+                    <p>将你的照片变成吉卜力动画风格的艺术作品</p>
+                </div>
+                <div class="footer-links">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="gallery.html">作品展示</a></li>
+                        <li><a href="generator.html">开始创作</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="privacy.html">隐私政策</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>关注我们</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-bilibili"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 吉卜力风格转换器. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/generator.js"></script>
+</body>
+</html> 
+</html> 

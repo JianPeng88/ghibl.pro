@@ -1,0 +1,24 @@
+<svg viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 - 透明 -->
+  <rect x="0" y="0" width="160" height="40" rx="5" fill="transparent"/>
+  
+  <!-- 龙猫轮廓 -->
+  <path d="M25,5 C20,5 17.5,10 17.5,17.5 C17.5,25 20,30 25,30 C30,30 32.5,25 32.5,17.5 C32.5,10 30,5 25,5 Z" fill="#4a86e8" opacity="0.9"/>
+  
+  <!-- 龙猫耳朵 -->
+  <path d="M21.5,7 L20,3 L22.5,6 Z" fill="#4a86e8"/>
+  <path d="M28.5,7 L30,3 L27.5,6 Z" fill="#4a86e8"/>
+  
+  <!-- 龙猫眼睛 -->
+  <circle cx="22.5" cy="15" r="1.5" fill="#333"/>
+  <circle cx="27.5" cy="15" r="1.5" fill="#333"/>
+  
+  <!-- 龙猫肚子 -->
+  <ellipse cx="25" cy="20" rx="4" ry="5" fill="#f0f0f0"/>
+  
+  <!-- AI文字 -->
+  <text x="40" y="24" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">吉卜力AI</text>
+  
+  <!-- 装饰性线条 -->
+  <path d="M5,35 C15,30 30,37.5 45,32.5 C60,27.5 75,32.5 95,27.5" stroke="#4a86e8" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>

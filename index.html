@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉卜力风格AI - 将你的照片变成吉卜力动画风格</title>
+    <meta name="description" content="使用我们的AI工具，将普通照片转换成宫崎骏吉卜力工作室风格的艺术作品。">
+    <!-- Bootstrap 3 CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 生成器页面专用样式 -->
+    <link rel="stylesheet" href="css/generator.css">
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 更新的主横幅样式 */
+        .jumbotron {
+            background: url('img/hero-background.jpg') center center no-repeat;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 150px 0;
+            margin-bottom: 0;
+            position: relative;
+        }
+        
+        /* 生成器区域样式 - 减少空白 */
+        #generator-section {
+            padding: 10px 0 30px;
+            background-color: rgba(240, 247, 255, 0.9);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .generator-box {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .generator-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .generator-title h2 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 26px;
+        }
+        
+        .generator-title p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* 美化上传区域 */
+        .upload-area {
+            border: 2px dashed #3a7bd5;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f8fbff;
+        }
+        
+        .upload-area:hover {
+            border-color: #00d2ff;
+            background-color: #f0f7ff;
+            transform: translateY(-2px);
+        }
+        
+        .upload-area.highlight {
+            border-color: #00d2ff;
+            background-color: #e6f7ff;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+        }
+        
+        .upload-icon {
+            font-size: 54px;
+            color: #3a7bd5;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover .upload-icon {
+            transform: scale(1.1);
+            color: #00d2ff;
+        }
+        
+        /* 美化提交按钮 */
+        .submit-btn {
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(58, 123, 213, 0.2);
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #2c5ea3, #00b8e6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .submit-btn i {
+            margin-right: 8px;
+        }
+        
+        /* 调整其他按钮样式 */
+        .btn-primary {
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(58, 123, 213, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #2c5ea3, #00b8e6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
+        }
+        
+        .btn-default {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-default:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 调整进度条样式 */
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        }
+        
+        /* 进度条 */
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .progress {
+            height: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .success-message {
+            display: none;
+            padding: 15px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            color: #155724;
+            margin-top: 20px;
+        }
+
+        /* 区域高亮动画 */
+        @keyframes highlight {
+            0% { box-shadow: 0 0 0 rgba(58, 123, 213, 0); }
+            50% { box-shadow: 0 0 20px rgba(58, 123, 213, 0.5); }
+            100% { box-shadow: 0 0 0 rgba(58, 123, 213, 0); }
+        }
+
+        .highlight-section {
+            animation: highlight 0.8s ease-in-out;
+        }
+
+        /* 平滑的过渡效果 */
+        .generator-box, .upload-area, .submit-btn, .btn-primary, .btn-default {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* 增强hover效果 */
+        .btn:focus {
+            outline: none;
+        }
+
+        /* 改善邮箱输入框样式 */
+        .email-input .form-control {
+            padding: 12px 15px;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: none;
+            transition: all 0.3s ease;
+        }
+
+        .email-input .form-control:focus {
+            border-color: #3a7bd5;
+            box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+        }
+
+        /* 行动召唤区域优化 */
+        #cta {
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            padding: 60px 0;
+            color: white;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/cta-pattern.png') repeat; /* 如果有这个图片 */
+            opacity: 0.05;
+        }
+
+        #cta h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        #cta p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #cta .btn-lg {
+            background: white;
+            color: #3a7bd5;
+            border: none;
+            padding: 15px 35px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 40px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        #cta .btn-lg:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        #cta .btn-lg:active {
+            transform: translateY(1px);
+        }
+
+        /* 调整步骤区域链接按钮 */
+        .start-now .btn-primary {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            border: none;
+            letter-spacing: 0.5px;
+        }
+
+        /* 语言切换和亮暗模式按钮样式 */
+        .language-theme-toggle {
+            margin-left: 15px;
+        }
+
+        .language-check {
+            margin-right: 5px;
+            opacity: 0;
+        }
+
+        .language-item.active .language-check {
+            opacity: 1;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f0f0f0;
+        }
+
+        .dark-mode .navbar-default {
+            background-color: #333;
+            border-color: #444;
+        }
+
+        .dark-mode .navbar-default .navbar-brand,
+        .dark-mode .navbar-default .navbar-nav > li > a {
+            color: #f0f0f0;
+        }
+
+        .dark-mode .navbar-default .navbar-nav > .active > a,
+        .dark-mode .navbar-default .navbar-nav > .active > a:focus,
+        .dark-mode .navbar-default .navbar-nav > .active > a:hover {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .dark-mode .jumbotron {
+            background-color: #333;
+            color: #f0f0f0;
+        }
+
+        .dark-mode .bg-light {
+            background-color: #333 !important;
+            color: #f0f0f0;
+        }
+
+        .dark-mode .generator-box,
+        .dark-mode .feature-box,
+        .dark-mode .step-box,
+        .dark-mode .testimonial,
+        .dark-mode .faq-item {
+            background-color: #444;
+            color: #f0f0f0;
+        }
+
+        .dark-mode .generator-title h2,
+        .dark-mode .section-title h2,
+        .dark-mode .feature-box h3,
+        .dark-mode .step-box h3,
+        .dark-mode .testimonial-user h4,
+        .dark-mode .faq-item h3 {
+            color: #f0f0f0;
+        }
+
+        .dark-mode .form-control {
+            background-color: #555;
+            border-color: #666;
+            color: #f0f0f0;
+        }
+
+        .dark-mode footer {
+            background-color: #222;
+            color: #f0f0f0;
+        }
+
+        .dark-mode .upload-area {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        .dark-mode .success-message {
+            background-color: #2c5642;
+            border-color: #2c7a5e;
+            color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="img/logo.svg" alt="吉卜力AI" class="logo-img">
+                    吉卜力AI生成器
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="index.html" data-lang-key="nav.home">首页</a></li>
+                    <li><a href="#generator-section" data-lang-key="nav.generator">生成工具</a></li>
+                    <li><a href="pages/gallery.html" data-lang-key="nav.gallery">作品展示</a></li>
+                    <li><a href="pages/about.html" data-lang-key="nav.about">关于我们</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right language-theme-toggle">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-globe"></i> <span class="language-text">中文</span> <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu language-dropdown">
+                            <li><a href="#" data-lang="en" class="language-item"><i class="fa fa-check language-check en-check"></i> English</a></li>
+                            <li><a href="#" data-lang="zh" class="language-item active"><i class="fa fa-check language-check zh-check"></i> 中文</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" id="theme-toggle">
+                            <i class="fa fa-moon-o"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主横幅 -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 data-lang-key="home.banner.title">将你的照片变成吉卜力动画风格</h1>
+            <p data-lang-key="home.banner.subtitle">使用我们的AI技术，创造属于你的宫崎骏世界</p>
+            <div class="cta-buttons">
+                <a href="#generator-section" class="btn btn-primary" data-lang-key="home.banner.start">开始创作</a>
+                <a href="pages/gallery.html" class="btn btn-default" data-lang-key="home.banner.view">查看作品</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 生成器区域 - 优化布局 -->
+    <section id="generator-section">
+        <div class="container">
+            <div class="generator-title">
+                <h2 data-lang-key="generator.title">创建你的吉卜力风格作品</h2>
+                <p data-lang-key="generator.subtitle">上传照片，几分钟内将作品发送到您的邮箱</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="generator-box">
+                        <form id="ghibliForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- 邮箱输入 -->
+                                    <div class="form-group email-input">
+                                        <label for="email" data-lang-key="generator.email">电子邮箱地址 <span class="text-danger">*</span></label>
+                                        <input type="email" id="email" class="form-control" placeholder="example@mail.com" required>
+                                    </div>
+                                    
+                                    <!-- 图片上传区域 -->
+                                    <div class="form-group">
+                                        <label data-lang-key="generator.upload">上传照片 <span class="text-danger">*</span></label>
+                                        <div class="upload-area" id="uploadArea">
+                                            <div class="upload-icon">
+                                                <i class="fa fa-cloud-upload"></i>
+                                            </div>
+                                            <h4 data-lang-key="generator.upload.hint">点击或拖放照片到这里</h4>
+                                            <p data-lang-key="generator.upload.formats">支持JPG、PNG格式，最大5MB</p>
+                                            <input type="file" id="fileInput" style="display: none;" accept="image/jpeg, image/png">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 预览区域 -->
+                                    <div id="imagePreview" style="display: none; margin-bottom: 20px;">
+                                        <div class="text-center">
+                                            <img id="previewImg" src="#" alt="预览图" class="img-responsive img-thumbnail" style="max-height: 300px; margin: 0 auto;">
+                                            <button type="button" class="btn btn-sm btn-default" id="removeImage" style="margin-top: 10px;">
+                                                <i class="fa fa-times"></i> <span data-lang-key="generator.remove">移除图片</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 提交按钮 -->
+                                    <button type="submit" class="btn submit-btn" id="submitBtn">
+                                        <i class="fa fa-magic"></i> <span data-lang-key="generator.submit">生成吉卜力风格作品</span>
+                                    </button>
+                                    
+                                    <!-- 进度条 -->
+                                    <div class="progress-container" id="progressContainer">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" id="progressBar" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                        <p class="text-center" id="progressText" data-lang-key="generator.processing">处理中...</p>
+                                    </div>
+                                    
+                                    <!-- 成功信息 -->
+                                    <div class="success-message" id="successMessage" data-lang-key="generator.success">
+                                        您的请求已成功提交！我们将在处理完成后发送结果到您的邮箱，请注意查收。
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特色功能 -->
+    <section id="features" class="container">
+        <div class="row text-center section-title">
+            <div class="col-md-12">
+                <h2 data-lang-key="features.title">为什么选择我们的AI生成器</h2>
+                <p data-lang-key="features.subtitle">无需专业技能，轻松创造吉卜力风格的艺术作品</p>
+            </div>
+        </div>
+
+        <div class="row feature-boxes">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fa fa-magic"></i>
+                    </div>
+                    <h3 data-lang-key="feature.ai.title">先进AI技术</h3>
+                    <p data-lang-key="feature.ai.desc">采用最先进的人工智能和深度学习技术，精确捕捉吉卜力作品的艺术特点，确保高品质的转换效果。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fa fa-sliders"></i>
+                    </div>
+                    <h3 data-lang-key="feature.styles.title">多种风格选择</h3>
+                    <p data-lang-key="feature.styles.desc">提供《龙猫》、《千与千寻》、《哈尔的移动城堡》等多种经典吉卜力电影风格，满足不同创作需求。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fa fa-rocket"></i>
+                    </div>
+                    <h3 data-lang-key="feature.speed.title">超快处理速度</h3>
+                    <p data-lang-key="feature.speed.desc">优化的图像处理流程，让你只需短短几秒即可获得高质量的吉卜力风格作品，无需漫长等待。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row feature-boxes">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fa fa-paint-brush"></i>
+                    </div>
+                    <h3 data-lang-key="feature.dual.title">双重创作模式</h3>
+                    <p data-lang-key="feature.dual.desc">支持图片转换和文字生成两种模式，无论是转换现有照片还是从文字描述创造全新画面，都能轻松实现。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fa fa-cloud-download"></i>
+                    </div>
+                    <h3 data-lang-key="feature.download.title">高清下载分享</h3>
+                    <p data-lang-key="feature.download.desc">生成的作品支持高分辨率下载，适合打印或在社交媒体上分享，让更多人欣赏你的吉卜力风格创作。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fa fa-heart"></i>
+                    </div>
+                    <h3 data-lang-key="feature.love.title">热爱与尊重</h3>
+                    <p data-lang-key="feature.love.desc">由热爱宫崎骏和吉卜力作品的团队开发，我们深刻理解并尊重这些作品的艺术价值和美学特点。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 示例展示 -->
+    <section id="examples" class="bg-light">
+        <div class="container">
+            <div class="row text-center section-title">
+                <div class="col-md-12">
+                    <h2 data-lang-key="examples.title">吉卜力风格示例</h2>
+                    <p data-lang-key="examples.subtitle">看看我们的AI如何将普通照片转换成宫崎骏风格的艺术作品</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="img/style-totoro.jpg" alt="龙猫风格示例" class="img-responsive" data-lang-alt="examples.totoro.alt">
+                        <div class="overlay">
+                            <div class="overlay-content">
+                                <h4 data-lang-key="examples.totoro.title">龙猫风格</h4>
+                                <p data-lang-key="examples.totoro.desc">充满自然和温馨的田园风光</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="img/style-spirited.jpg" alt="千与千寻风格示例" class="img-responsive" data-lang-alt="examples.spirited.alt">
+                        <div class="overlay">
+                            <div class="overlay-content">
+                                <h4 data-lang-key="examples.spirited.title">千与千寻风格</h4>
+                                <p data-lang-key="examples.spirited.desc">神秘奇幻的幽灵世界</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="img/style-howl.jpg" alt="哈尔的移动城堡风格示例" class="img-responsive" data-lang-alt="examples.howl.alt">
+                        <div class="overlay">
+                            <div class="overlay-content">
+                                <h4 data-lang-key="examples.howl.title">哈尔的移动城堡风格</h4>
+                                <p data-lang-key="examples.howl.desc">蒸汽朋克与魔法的融合</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center view-more">
+                <div class="col-md-12">
+                    <a href="pages/gallery.html" class="btn btn-default" data-lang-key="examples.more">查看更多示例</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 吉卜力风格特点 -->
+    <section id="style-features" class="container">
+        <div class="row text-center section-title">
+            <div class="col-md-12">
+                <h2 data-lang-key="style.title">吉卜力风格的独特魅力</h2>
+                <p data-lang-key="style.subtitle">我们的AI能够准确捕捉这些艺术特点</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="style-feature">
+                    <h3 data-lang-key="style.nature.title"><i class="fa fa-tree"></i> 精美自然景观</h3>
+                    <p data-lang-key="style.nature.desc">宫崎骏作品中的自然环境描绘极为精细，无论是茂密的森林、广阔的草原还是宁静的湖泊，都充满了生命力和细节。我们的AI能够将这种对自然的细腻表现应用到你的照片中。</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="style-feature">
+                    <h3 data-lang-key="style.light.title"><i class="fa fa-sun-o"></i> 梦幻光影效果</h3>
+                    <p data-lang-key="style.light.desc">吉卜力作品中的光线处理独具特色，柔和的阳光、神秘的月光或魔法的光芒，都为画面增添了独特的氛围。我们的AI能够重现这种梦幻般的光影效果。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="style-feature">
+                    <h3 data-lang-key="style.texture.title"><i class="fa fa-paint-brush"></i> 水彩般的质感</h3>
+                    <p data-lang-key="style.texture.desc">吉卜力作品常采用传统手绘动画技术，呈现出水彩画般的柔和质感。我们的AI能够模拟这种独特的绘画风格，赋予照片温暖而艺术的质感。</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="style-feature">
+                    <h3 data-lang-key="style.fantasy.title"><i class="fa fa-star"></i> 奇幻与现实的融合</h3>
+                    <p data-lang-key="style.fantasy.desc">宫崎骏的作品常将奇幻元素与现实世界巧妙融合，创造出既熟悉又陌生的世界。我们的AI能够在保留照片原有元素的同时，添加这种独特的奇幻感。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 如何使用 -->
+    <section id="how-to-use" class="bg-light">
+        <div class="container">
+            <div class="row text-center section-title">
+                <div class="col-md-12">
+                    <h2 data-lang-key="howto.title">如何使用我们的AI生成器</h2>
+                    <p data-lang-key="howto.subtitle">只需简单三步，即可创造吉卜力风格的艺术作品</p>
+                </div>
+            </div>
+
+            <div class="row steps">
+                <div class="col-md-4">
+                    <div class="step-box text-center">
+                        <div class="step-number">1</div>
+                        <h3 data-lang-key="howto.step1.title">上传照片或输入文字</h3>
+                        <p data-lang-key="howto.step1.desc">上传你想要转换的照片，或输入详细的场景描述，告诉AI你想创造什么样的画面。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-box text-center">
+                        <div class="step-number">2</div>
+                        <h3 data-lang-key="howto.step2.title">选择吉卜力风格</h3>
+                        <p data-lang-key="howto.step2.desc">从多种经典吉卜力电影风格中选择你喜欢的一种，并调整转换强度和其他参数。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-box text-center">
+                        <div class="step-number">3</div>
+                        <h3 data-lang-key="howto.step3.title">生成并下载作品</h3>
+                        <p data-lang-key="howto.step3.desc">点击生成按钮，等待几秒钟后获得你的吉卜力风格作品，并下载分享给亲朋好友。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center start-now">
+                <div class="col-md-12">
+                    <a href="#generator-section" class="btn btn-primary" data-lang-key="howto.button">立即开始创作</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户评价 -->
+    <section id="testimonials" class="container">
+        <div class="row text-center section-title">
+            <div class="col-md-12">
+                <h2 data-lang-key="testimonials.title">用户评价</h2>
+                <p data-lang-key="testimonials.subtitle">看看其他用户如何评价我们的AI生成器</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p data-lang-key="testimonials.user1.content">这个工具太神奇了！我把自家院子的照片转换成了龙猫风格，效果惊人。现在这张照片已经成为我客厅里的装饰画，每个来访的朋友都赞不绝口。</p>
+                    </div>
+                    <div class="testimonial-user">
+                        <img src="img/user1.jpg" alt="用户头像" class="img-circle">
+                        <div class="user-info">
+                            <h4 data-lang-key="testimonials.user1.name">李小明</h4>
+                            <p data-lang-key="testimonials.user1.role">摄影爱好者</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p data-lang-key="testimonials.user2.content">作为一名小学美术老师，我经常使用这个工具来激发学生的创造力。孩子们看到自己的画作变成吉卜力风格后都非常兴奋，这增强了他们对艺术的兴趣。</p>
+                    </div>
+                    <div class="testimonial-user">
+                        <img src="img/user2.jpg" alt="用户头像" class="img-circle">
+                        <div class="user-info">
+                            <h4 data-lang-key="testimonials.user2.name">张老师</h4>
+                            <p data-lang-key="testimonials.user2.role">小学美术教师</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p data-lang-key="testimonials.user3.content">我是宫崎骏作品的忠实粉丝，这个AI生成器完美捕捉了吉卜力的艺术风格。我用它为自己写的小说创作了插图，现在我的读者们都在追问我是从哪里找到这么棒的插画师的。</p>
+                    </div>
+                    <div class="testimonial-user">
+                        <img src="img/user3.jpg" alt="用户头像" class="img-circle">
+                        <div class="user-info">
+                            <h4 data-lang-key="testimonials.user3.name">王佳佳</h4>
+                            <p data-lang-key="testimonials.user3.role">网络小说作者</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section id="faq" class="bg-light">
+        <div class="container">
+            <div class="row text-center section-title">
+                <div class="col-md-12">
+                    <h2 data-lang-key="faq.title">常见问题</h2>
+                    <p data-lang-key="faq.subtitle">关于我们AI生成器的一些常见疑问</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="faq-item">
+                        <h3 data-lang-key="faq.q1.title">我需要有绘画或设计技能吗？</h3>
+                        <p data-lang-key="faq.q1.answer">完全不需要。我们的AI生成器设计得非常直观易用，即使没有任何绘画或设计经验的用户也能轻松创造出精美的吉卜力风格作品。你只需上传照片或输入描述，选择风格，剩下的交给AI来完成。</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="faq-item">
+                        <h3 data-lang-key="faq.q2.title">转换后的图像质量如何？</h3>
+                        <p data-lang-key="faq.q2.answer">我们的AI生成器能够输出高分辨率图像，适合在社交媒体分享、打印或作为艺术品展示。图像质量取决于上传照片的原始质量，但我们的AI会尽可能保留细节同时应用吉卜力艺术风格。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="faq-item">
+                        <h3 data-lang-key="faq.q3.title">可以用于商业目的吗？</h3>
+                        <p data-lang-key="faq.q3.answer">生成的作品可用于个人用途，包括社交媒体分享和个人创作。如需用于商业目的，请查阅我们的服务条款或联系我们获取商业授权。请注意，吉卜力工作室的原创风格存在版权保护。</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="faq-item">
+                        <h3 data-lang-key="faq.q4.title">我的照片和生成的作品安全吗？</h3>
+                        <p data-lang-key="faq.q4.answer">我们非常重视用户隐私。上传的照片和生成的作品不会被永久保存在我们的服务器上，处理完成后将自动删除。我们不会将你的照片或作品用于任何未经授权的用途。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center more-questions">
+                <div class="col-md-12">
+                    <a href="pages/about.html#faq" class="btn btn-default" data-lang-key="faq.more">查看更多问题</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行动召唤 -->
+    <section id="cta">
+        <div class="container text-center">
+            <h2 data-lang-key="cta.title">准备好创造你的吉卜力风格作品了吗？</h2>
+            <p data-lang-key="cta.subtitle">立即体验我们的AI生成器，将你的照片或想法变成宫崎骏风格的艺术品</p>
+            <a href="#generator-section" class="btn btn-lg" data-lang-key="cta.button">开始创作</a>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>吉卜力AI生成器</h3>
+                    <p data-lang-key="footer.description">使用AI技术创造宫崎骏风格的艺术作品，让每个人都能成为吉卜力艺术家。</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fa fa-weibo"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-wechat"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3 data-lang-key="footer.quicklinks">快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html" data-lang-key="nav.home">首页</a></li>
+                        <li><a href="#generator-section" data-lang-key="nav.generator">生成工具</a></li>
+                        <li><a href="pages/gallery.html" data-lang-key="nav.gallery">作品展示</a></li>
+                        <li><a href="pages/about.html" data-lang-key="nav.about">关于我们</a></li>
+                        <li><a href="pages/about.html#privacy" data-lang-key="footer.privacy">隐私政策</a></li>
+                        <li><a href="pages/about.html#terms" data-lang-key="footer.terms">服务条款</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3 data-lang-key="footer.contact">联系我们</h3>
+                    <p><i class="fa fa-envelope"></i> <span data-lang-key="footer.email">contact@ghibliai.com</span></p>
+                    <p><i class="fa fa-phone"></i> <span data-lang-key="footer.phone">+86 123 4567 8900</span></p>
+                    <p><i class="fa fa-map-marker"></i> <span data-lang-key="footer.address">北京市朝阳区创意园区A座</span></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="copyright text-center">
+                        <p>&copy; 2023 吉卜力AI生成器。<span data-lang-key="footer.copyright">保留所有权利。</span></p>
+                        <p data-lang-key="footer.disclaimer">本站与吉卜力工作室没有任何关联。吉卜力风格仅指视觉艺术风格。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <a href="#" class="back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+    <!-- JavaScript库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- 生成器功能脚本 -->
+    <script>
+        $(document).ready(function() {
+            // 平滑滚动
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                var target = this.hash;
+                var $target = $(target);
+                
+                // 先检查目标是否存在
+                if ($target.length) {
+                    // 计算偏移量 - 减小值以减少空白
+                    var offset = $target.offset().top - 60;
+                    
+                    // 执行滚动动画，加快速度
+                    $('html, body').animate({
+                        'scrollTop': offset
+                    }, 600, 'swing', function() {
+                        // 滚动完成后添加高亮效果
+                        $target.addClass('highlight-section');
+                        setTimeout(function() {
+                            $target.removeClass('highlight-section');
+                        }, 500);
+                    });
+                }
+            });
+            
+            // 图片上传功能
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            const removeImage = document.getElementById('removeImage');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            let uploadedFile = null;
+            
+            // 点击上传区域触发文件选择
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // 文件选择事件
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    handleFile(this.files[0]);
+                }
+            });
+            
+            // 拖放功能
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            // 拖放样式
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, function() {
+                    uploadArea.classList.add('highlight');
+                });
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, function() {
+                    uploadArea.classList.remove('highlight');
+                });
+            });
+            
+            // 处理拖放的文件
+            uploadArea.addEventListener('drop', function(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files && files[0]) {
+                    handleFile(files[0]);
+                }
+            });
+            
+            // 处理文件
+            function handleFile(file) {
+                // 验证文件类型
+                if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                    alert('请上传JPG或PNG格式的图片');
+                    return;
+                }
+                
+                // 验证文件大小
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('文件大小不能超过5MB');
+                    return;
+                }
+                
+                uploadedFile = file;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    uploadArea.style.display = 'none';
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            // 移除图片
+            removeImage.addEventListener('click', function() {
+                uploadedFile = null;
+                fileInput.value = '';
+                previewImg.src = '#';
+                imagePreview.style.display = 'none';
+                uploadArea.style.display = 'block';
+            });
+            
+            // 表单提交
+            $('#ghibliForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const email = $('#email').val();
+                
+                // 表单验证
+                if (!email || !uploadedFile) {
+                    alert('请填写邮箱地址并上传图片');
+                    return;
+                }
+                
+                // 显示进度条
+                submitBtn.disabled = true;
+                progressContainer.style.display = 'block';
+                
+                // 模拟上传进度
+                let progress = 0;
+                const interval = setInterval(function() {
+                    progress += 5;
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = '处理中... ' + progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // 延迟显示成功信息
+                        setTimeout(function() {
+                            progressContainer.style.display = 'none';
+                            successMessage.style.display = 'block';
+                            
+                            // 5秒后重置表单
+                            setTimeout(resetForm, 5000);
+                        }, 1000);
+                    }
+                }, 200);
+                
+                // 在实际应用中，这里会发送AJAX请求到服务器
+                console.log('提交数据:', {
+                    email: email,
+                    fileName: uploadedFile.name,
+                    fileSize: uploadedFile.size
+                });
+            });
+            
+            // 重置表单
+            function resetForm() {
+                $('#ghibliForm')[0].reset();
+                uploadedFile = null;
+                previewImg.src = '#';
+                imagePreview.style.display = 'none';
+                uploadArea.style.display = 'block';
+                successMessage.style.display = 'none';
+                submitBtn.disabled = false;
+                progressBar.style.width = '0%';
+            }
+        });
+    </script>
+
+    <!-- 语言切换和暗模式切换功能 -->
+    <script>
+    // 语言切换和暗模式切换功能
+    $(document).ready(function() {
+        // 亮暗模式切换
+        $('#theme-toggle').click(function(e) {
+            e.preventDefault();
+            $('body').toggleClass('dark-mode');
+            
+            // 切换图标
+            var icon = $(this).find('i');
+            if (icon.hasClass('fa-moon-o')) {
+                icon.removeClass('fa-moon-o').addClass('fa-sun-o');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.removeClass('fa-sun-o').addClass('fa-moon-o');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // 检查用户之前的主题选择
+        if (localStorage.getItem('theme') === 'dark') {
+            $('body').addClass('dark-mode');
+            $('#theme-toggle i').removeClass('fa-moon-o').addClass('fa-sun-o');
+        }
+        
+        // 语言切换功能
+        $('.language-item').click(function(e) {
+            e.preventDefault();
+            var lang = $(this).data('lang');
+            
+            // 保存语言选择
+            localStorage.setItem('language', lang);
+            
+            // 更新UI
+            $('.language-item').removeClass('active');
+            $(this).addClass('active');
+            $('.language-text').text(lang === 'en' ? 'English' : '中文');
+            
+            // 切换语言显示
+            toggleLanguage(lang);
+        });
+        
+        // 初始化语言
+        var savedLang = localStorage.getItem('language') || 'zh';
+        if (savedLang === 'en') {
+            $('.language-item[data-lang="en"]').addClass('active');
+            $('.language-item[data-lang="zh"]').removeClass('active');
+            $('.language-text').text('English');
+            toggleLanguage('en');
+        }
+    });
+
+    // 语言切换函数现在调用lang.js中的函数
+    function toggleLanguage(lang) {
+        // 调用lang.js中定义的函数
+        if (typeof window.toggleLanguage === 'function') {
+            window.toggleLanguage(lang);
+        } else {
+            console.error('Language toggle function not found. Make sure lang.js is loaded.');
+        }
+    }
+    </script>
+
+    <!-- 添加lang.js引用 -->
+    <script src="js/lang.js"></script>
+</body>
+</html> 

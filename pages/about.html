@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 吉卜力风格AI图像生成器</title>
+    <!-- Bootstrap 3 CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">
+                    <img src="../img/logo.svg" alt="吉卜力AI" class="logo-img">
+                    吉卜力AI生成器
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../index.html">首页</a></li>
+                    <li><a href="generator.html">生成工具</a></li>
+                    <li><a href="gallery.html">作品展示</a></li>
+                    <li class="active"><a href="about.html">关于我们</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <div class="page-header">
+        <div class="container">
+            <h1>关于吉卜力AI生成器</h1>
+            <p class="lead">探索AI艺术与宫崎骏风格的美妙融合</p>
+        </div>
+    </div>
+
+    <!-- 关于项目 -->
+    <section id="about-project" class="container section-padding">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>我们的故事</h2>
+                <p>吉卜力AI生成器诞生于对宫崎骏作品的无限热爱与人工智能技术的探索。我们是一群热爱动画艺术的科技爱好者，希望通过AI技术让每个人都能创造出吉卜力风格的艺术作品。</p>
+                <p>从《龙猫》到《千与千寻》，从《哈尔的移动城堡》到《幽灵公主》，吉卜力工作室的作品以其独特的艺术风格和深刻的人文关怀打动了全球观众。我们希望通过现代技术，让这种艺术形式得到更广泛的传播和应用。</p>
+                <p>2023年初，我们的团队开始研究如何将机器学习技术应用于艺术创作。经过一年多的技术研发和模型训练，我们终于推出了这款专注于吉卜力风格生成的AI工具，帮助用户轻松创造出具有宫崎骏风格的艺术作品。</p>
+            </div>
+            <div class="col-md-6">
+                <img src="../img/about-story.jpg" alt="关于我们的故事" class="img-responsive about-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- 我们的使命 -->
+    <section id="mission" class="bg-light section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="../img/about-mission.jpg" alt="我们的使命" class="img-responsive about-img">
+                </div>
+                <div class="col-md-6">
+                    <h2>我们的使命</h2>
+                    <p>我们的使命是通过AI技术让艺术创作变得更加平民化，让每个人都能表达自己的创意。我们相信：</p>
+                    <ul class="mission-list">
+                        <li><i class="fa fa-check"></i> 艺术创作不应有门槛，人人都可以成为艺术家</li>
+                        <li><i class="fa fa-check"></i> 技术应当服务于艺术表达，而非取代人类创造力</li>
+                        <li><i class="fa fa-check"></i> 尊重原创艺术，同时促进艺术形式的创新与传播</li>
+                        <li><i class="fa fa-check"></i> 构建一个开放、友善的创作者社区，共同探索AI艺术的可能性</li>
+                    </ul>
+                    <p>通过吉卜力AI生成器，我们希望搭建起科技与艺术之间的桥梁，让更多人感受到创作的乐趣，同时传播吉卜力动画所代表的美学价值和人文精神。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术原理 -->
+    <section id="technology" class="container section-padding">
+        <div class="row text-center section-title">
+            <div class="col-md-12">
+                <h2>技术原理</h2>
+                <p>我们如何将AI与吉卜力艺术风格结合</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="tech-box">
+                    <div class="tech-icon">
+                        <i class="fa fa-code"></i>
+                    </div>
+                    <h3>深度学习模型</h3>
+                    <p>我们的AI基于先进的深度学习模型，通过分析宫崎骏作品中的视觉元素、色彩搭配和构图特点，学习其独特的艺术风格。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="tech-box">
+                    <div class="tech-icon">
+                        <i class="fa fa-paint-brush"></i>
+                    </div>
+                    <h3>风格迁移</h3>
+                    <p>我们的系统能够将用户上传的图片转换为吉卜力风格，同时保留原始图像的内容和结构，实现艺术风格的完美融合。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="tech-box">
+                    <div class="tech-icon">
+                        <i class="fa fa-comment"></i>
+                    </div>
+                    <h3>文本到图像</h3>
+                    <p>通过自然语言处理技术，我们的AI能够理解用户的文字描述，并将其转化为具有吉卜力风格的视觉作品。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row tech-more-info">
+            <div class="col-md-8 col-md-offset-2">
+                <p class="text-center">我们持续改进算法模型，提升生成质量，创造更加接近原作的吉卜力风格艺术。同时，我们注重用户体验，让复杂的技术变得简单易用。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 团队介绍 -->
+    <section id="team" class="bg-light section-padding">
+        <div class="container">
+            <div class="row text-center section-title">
+                <div class="col-md-12">
+                    <h2>我们的团队</h2>
+                    <p>热爱技术与艺术的创作者们</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-member">
+                        <img src="../img/team1.jpg" alt="团队成员照片" class="img-responsive">
+                        <div class="member-info">
+                            <h4>张明</h4>
+                            <p>创始人 & AI研究员</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-member">
+                        <img src="../img/team2.jpg" alt="团队成员照片" class="img-responsive">
+                        <div class="member-info">
+                            <h4>李华</h4>
+                            <p>前端开发工程师</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-member">
+                        <img src="../img/team3.jpg" alt="团队成员照片" class="img-responsive">
+                        <div class="member-info">
+                            <h4>王芳</h4>
+                            <p>UI/UX设计师</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-behance"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-member">
+                        <img src="../img/team4.jpg" alt="团队成员照片" class="img-responsive">
+                        <div class="member-info">
+                            <h4>赵强</h4>
+                            <p>后端工程师</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row team-join">
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <div class="join-team-box">
+                        <h3>加入我们的团队</h3>
+                        <p>我们正在寻找热爱AI技术和吉卜力动画的人才加入我们的团队。如果你对我们的项目感兴趣，请发送简历到：</p>
+                        <a href="mailto:careers@ghibliai.com" class="btn btn-primary">careers@ghibliai.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 隐私政策 -->
+    <section id="privacy" class="container section-padding">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>隐私政策</h2>
+                <div class="policy-content">
+                    <p>吉卜力AI生成器重视您的隐私保护。本隐私政策说明我们如何收集、使用和保护您的个人信息。使用本网站即表示您同意本隐私政策中描述的做法。</p>
+                    
+                    <h4>信息收集</h4>
+                    <p>我们可能收集以下类型的信息：</p>
+                    <ul>
+                        <li>您提供的个人信息，如电子邮件地址（用于可选的作品分享功能）</li>
+                        <li>您上传的图片内容（用于风格转换功能）</li>
+                        <li>您输入的文本描述（用于文本到图像生成功能）</li>
+                        <li>使用网站功能时自动收集的技术信息，如IP地址、浏览器类型等</li>
+                    </ul>
+                    
+                    <h4>信息使用</h4>
+                    <p>我们使用收集的信息用于：</p>
+                    <ul>
+                        <li>提供、维护和改进我们的网站和服务</li>
+                        <li>处理您的图像生成和风格转换请求</li>
+                        <li>回应您的询问或请求</li>
+                        <li>改进我们的AI模型和算法</li>
+                    </ul>
+                    
+                    <h4>信息保护</h4>
+                    <p>我们采取合理的安全措施保护您的个人信息。您上传的图片和生成的作品仅用于提供服务，不会被用于其他商业目的。</p>
+                    
+                    <h4>Cookie使用</h4>
+                    <p>我们使用Cookie来改善用户体验并收集使用统计数据。您可以通过浏览器设置控制Cookie的使用。</p>
+                    
+                    <h4>第三方服务</h4>
+                    <p>我们的网站可能包含第三方服务提供商的链接或功能。这些第三方可能有自己的隐私政策，我们建议您查阅相关条款。</p>
+                    
+                    <h4>政策更新</h4>
+                    <p>我们可能会不时更新本隐私政策。更新后的政策将在本页面发布，重大变更会通过网站通知。</p>
+                    
+                    <h4>联系我们</h4>
+                    <p>如果您对我们的隐私政策有任何疑问，请联系：privacy@ghibliai.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务条款 -->
+    <section id="terms" class="bg-light section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>服务条款</h2>
+                    <div class="policy-content">
+                        <p>欢迎使用吉卜力AI生成器。使用本网站即表示您同意遵守以下服务条款。</p>
+                        
+                        <h4>使用条件</h4>
+                        <p>本网站提供的服务仅供个人、非商业用途使用。您同意：</p>
+                        <ul>
+                            <li>不会使用本服务创建、上传或分享任何违法、有害、威胁、滥用、骚扰、侵权或淫秽的内容</li>
+                            <li>不会使用本服务侵犯他人的知识产权或隐私权</li>
+                            <li>不会尝试干扰或破坏网站的正常运行</li>
+                            <li>不会使用自动化工具大量访问网站或生成内容</li>
+                        </ul>
+                        
+                        <h4>知识产权</h4>
+                        <p>关于使用本服务生成的作品：</p>
+                        <ul>
+                            <li>您通过本服务生成的作品，其版权归您所有，可用于个人创意项目</li>
+                            <li>使用本服务生成的作品如需用于商业目的，请联系我们获取授权</li>
+                            <li>您不得声称由本服务生成的作品是吉卜力工作室的原创作品</li>
+                            <li>分享生成作品时，我们鼓励您标明"由吉卜力AI生成器创作"</li>
+                        </ul>
+                        
+                        <h4>免责声明</h4>
+                        <p>本网站提供的服务按"现状"提供，不提供任何形式的保证。我们不保证：</p>
+                        <ul>
+                            <li>服务会满足您的特定需求</li>
+                            <li>服务不会中断，且及时、安全、无错误</li>
+                            <li>使用服务获得的结果准确或可靠</li>
+                        </ul>
+                        
+                        <h4>责任限制</h4>
+                        <p>在法律允许的最大范围内，我们不对因使用或无法使用本服务而导致的任何直接、间接、附带、特殊、惩罚性或后果性损害承担责任。</p>
+                        
+                        <h4>服务变更</h4>
+                        <p>我们保留随时修改或终止服务的权利，恕不另行通知。我们不对任何修改、暂停或终止服务对您或任何第三方造成的任何损失负责。</p>
+                        
+                        <h4>条款修改</h4>
+                        <p>我们可能会不时修改这些条款。修改后的条款将在本页面发布，继续使用本网站即表示您接受修改后的条款。</p>
+                        
+                        <h4>法律适用</h4>
+                        <p>这些条款受中华人民共和国法律管辖，并按其解释。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="container section-padding">
+        <div class="row text-center section-title">
+            <div class="col-md-12">
+                <h2>联系我们</h2>
+                <p>有任何问题或建议？请随时与我们联系</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fa fa-envelope"></i>
+                        <div class="contact-details">
+                            <h4>电子邮件</h4>
+                            <p><a href="mailto:contact@ghibliai.com">contact@ghibliai.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-wechat"></i>
+                        <div class="contact-details">
+                            <h4>微信公众号</h4>
+                            <p>吉卜力AI工坊</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-weibo"></i>
+                        <div class="contact-details">
+                            <h4>微博</h4>
+                            <p><a href="https://weibo.com/ghibliai" target="_blank">@吉卜力AI生成器</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">您的姓名</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">电子邮件</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">主题</label>
+                        <input type="text" class="form-control" id="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">您的留言</label>
+                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">发送留言</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>吉卜力AI生成器</h3>
+                    <p>使用AI技术创造宫崎骏风格的艺术作品，让每个人都能成为吉卜力艺术家。</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">首页</a></li>
+                        <li><a href="generator.html">生成工具</a></li>
+                        <li><a href="gallery.html">作品展示</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="#privacy">隐私政策</a></li>
+                        <li><a href="#terms">服务条款</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>联系我们</h3>
+                    <p><i class="fa fa-envelope"></i> contact@ghibliai.com</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fa fa-weibo"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-wechat"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-qq"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="copyright text-center">
+                        <p>&copy; 2025 吉卜力AI生成器。保留所有权利。</p>
+                        <p>本站与吉卜力工作室没有任何关联。吉卜力风格仅指视觉艺术风格。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // 表单提交
+            $('#contactForm').submit(function(e) {
+                e.preventDefault();
+                // 模拟表单提交成功
+                alert('感谢您的留言！我们会尽快回复您。');
+                this.reset();
+            });
+            
+            // 平滑滚动到页内锚点
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                var target = $(this.hash);
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 70
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

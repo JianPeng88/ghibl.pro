@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉卜力风格生成工具 - 创造属于你的宫崎骏世界</title>
+    <!-- Bootstrap 3 CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 生成器页面专用样式 -->
+    <link rel="stylesheet" href="../css/generator.css">
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Formik CDN -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/formik/2.2.9/formik.min.js"></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">
+                    <img src="../img/logo.svg" alt="吉卜力AI" class="logo-img">
+                    吉卜力AI生成器
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../index.html">首页</a></li>
+                    <li class="active"><a href="generator.html">生成工具</a></li>
+                    <li><a href="gallery.html">作品展示</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <div class="page-header">
+        <div class="container">
+            <h1>吉卜力风格生成工具</h1>
+            <p class="lead">使用AI技术创建宫崎骏风格的艺术作品</p>
+        </div>
+    </div>
+
+    <!-- 生成工具主体 -->
+    <section id="generator" class="container">
+        <div class="generator-container">
+            <!-- 选项卡导航 -->
+            <ul class="nav nav-tabs generator-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#textTab" id="textTab" aria-controls="textTab" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> 文字生成图像</a></li>
+                <li role="presentation"><a href="#imageTab" id="imageTab" aria-controls="imageTab" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i> 图像风格转换</a></li>
+            </ul>
+
+            <!-- 选项卡内容 -->
+            <div class="tab-content">
+                <form id="generateForm">
+                    <!-- 文字生成图像 -->
+                    <div role="tabpanel" class="tab-pane active" id="textTab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="promptText">输入描述<span class="text-danger">*</span></label>
+                                    <textarea id="promptText" name="promptText" class="form-control" rows="6" placeholder="描述你想创建的场景，例如：一个安静的湖边小屋，被茂密的森林环绕，夕阳余晖洒在湖面上，一个小女孩站在码头上..." required></textarea>
+                                    <p class="help-block">提示：详细的描述能获得更好的结果，建议使用15-50个词。</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="negativePrompt">排除内容（可选）</label>
+                                    <textarea id="negativePrompt" name="negativePrompt" class="form-control" rows="3" placeholder="描述你想避免出现在画面中的元素，例如：模糊，变形，低质量..."></textarea>
+                                    <p class="help-block">提示：指定不想要的元素可以提高生成质量。</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="seedValue">随机种子（可选）</label>
+                                    <input type="number" id="seedValue" name="seedValue" class="form-control" placeholder="留空使用随机种子">
+                                    <p class="help-block">提示：相同的种子和描述会生成相似的结果。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 图像风格转换 -->
+                    <div role="tabpanel" class="tab-pane" id="imageTab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>上传图片<span class="text-danger">*</span></label>
+                                    <div class="upload-area">
+                                        <input type="file" id="imageUpload" name="imageUpload" accept="image/*" style="display: none;">
+                                        <div class="upload-placeholder">
+                                            <div class="upload-icon">
+                                                <i class="fa fa-cloud-upload"></i>
+                                            </div>
+                                            <h4>点击或拖放图片至此处</h4>
+                                            <p>支持JPG、PNG格式，最大5MB</p>
+                                        </div>
+                                        <img id="imagePreview" class="img-responsive hidden" alt="预览图">
+                                    </div>
+                                    <p class="text-danger upload-error hidden">请上传一张图片</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="imagePrompt">补充描述（可选）</label>
+                                    <textarea id="imagePrompt" name="imagePrompt" class="form-control" rows="3" placeholder="添加额外描述来指导风格转换方向，例如：黄昏时分，充满魔幻感..."></textarea>
+                                    <p class="help-block">提示：补充描述可以帮助AI更好地理解你的意图。</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="strength">转换强度</label>
+                                    <input type="range" id="strength" name="strength" class="form-control" min="0.1" max="1" step="0.05" value="0.75">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <span>保留更多原图细节</span>
+                                        </div>
+                                        <div class="col-xs-6 text-right">
+                                            <span>更强的吉卜力风格</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 吉卜力风格选择 -->
+                    <div class="form-group">
+                        <label>选择吉卜力风格<span class="text-danger">*</span></label>
+                        <div class="style-selector">
+                            <div class="style-option active" data-style="totoro">
+                                <img src="../img/style-totoro.jpg" alt="龙猫风格" class="img-responsive">
+                                <div class="style-name">龙猫</div>
+                            </div>
+                            <div class="style-option" data-style="spirited">
+                                <img src="../img/style-spirited.jpg" alt="千与千寻风格" class="img-responsive">
+                                <div class="style-name">千与千寻</div>
+                            </div>
+                            <div class="style-option" data-style="howl">
+                                <img src="../img/style-howl.jpg" alt="哈尔移动城堡风格" class="img-responsive">
+                                <div class="style-name">哈尔移动城堡</div>
+                            </div>
+                            <div class="style-option" data-style="kiki">
+                                <img src="../img/style-kiki.jpg" alt="魔女宅急便风格" class="img-responsive">
+                                <div class="style-name">魔女宅急便</div>
+                            </div>
+                            <div class="style-option" data-style="mononoke">
+                                <img src="../img/style-mononoke.jpg" alt="幽灵公主风格" class="img-responsive">
+                                <div class="style-name">幽灵公主</div>
+                            </div>
+                            <div class="style-option" data-style="ponyo">
+                                <img src="../img/style-ponyo.jpg" alt="悬崖上的金鱼姬风格" class="img-responsive">
+                                <div class="style-name">崖上的波妞</div>
+                            </div>
+                            <div class="style-option" data-style="laputa">
+                                <img src="../img/style-laputa.jpg" alt="天空之城风格" class="img-responsive">
+                                <div class="style-name">天空之城</div>
+                            </div>
+                            <div class="style-option" data-style="wind">
+                                <img src="../img/style-wind.jpg" alt="起风了风格" class="img-responsive">
+                                <div class="style-name">起风了</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="selectedStyle" name="selectedStyle" value="totoro">
+                    </div>
+
+                    <!-- 图像大小选择 -->
+                    <div class="form-group">
+                        <label>图像尺寸</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="imageSize" value="1:1" checked>
+                                        1:1 正方形
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="imageSize" value="4:3">
+                                        4:3 横向
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="imageSize" value="3:4">
+                                        3:4 纵向
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fa fa-magic"></i> 生成图像
+                        </button>
+                    </div>
+                </form>
+
+                <!-- 加载中状态 -->
+                <div class="loading-spinner hidden">
+                    <div class="spinner"></div>
+                    <p class="text-center">AI正在创作中，请稍候...</p>
+                </div>
+
+                <!-- 结果展示区域 -->
+                <div class="result-container hidden">
+                    <h3 class="text-center">你的吉卜力风格作品</h3>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="result-image">
+                                <img src="#" alt="生成结果" class="img-responsive">
+                            </div>
+                            <div class="result-info text-center"></div>
+                            <div class="result-actions text-center">
+                                <a href="#" class="btn btn-primary" download>
+                                    <i class="fa fa-download"></i> 下载图像
+                                </a>
+                                <button class="btn btn-default">
+                                    <i class="fa fa-share-alt"></i> 分享
+                                </button>
+                                <button class="btn btn-default">
+                                    <i class="fa fa-refresh"></i> 重新生成
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 创作技巧 -->
+    <section id="tips" class="bg-light">
+        <div class="container">
+            <div class="row text-center section-title">
+                <div class="col-md-12">
+                    <h2>创作技巧</h2>
+                    <p>让你的吉卜力风格作品更加出色</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="tip-box">
+                        <div class="tip-icon">
+                            <i class="fa fa-lightbulb-o"></i>
+                        </div>
+                        <h3>使用详细描述</h3>
+                        <p>详细描述场景、角色、环境和光线可以获得更好的效果。例如，不要只说"一个房子"，而是描述"一个被绿色藤蔓覆盖的红色小屋，位于郁郁葱葱的森林中，阳光透过树叶洒落在门廊上"。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="tip-box">
+                        <div class="tip-icon">
+                            <i class="fa fa-paint-brush"></i>
+                        </div>
+                        <h3>指定光线和氛围</h3>
+                        <p>吉卜力作品以独特的光影处理闻名。尝试在描述中指定"清晨的柔和光线"、"黄昏的金色阳光"或"雨后的朦胧氛围"等光线效果，让作品更具吉卜力风格的氛围感。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="tip-box">
+                        <div class="tip-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h3>强调自然元素</h3>
+                        <p>宫崎骏作品经常包含精美的自然元素。在描述中加入"随风摇曳的草地"、"层次丰富的云朵"或"清澈见底的溪流"等自然细节，能够让生成结果更符合吉卜力的美学风格。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="tip-box">
+                        <div class="tip-icon">
+                            <i class="fa fa-magic"></i>
+                        </div>
+                        <h3>添加奇幻元素</h3>
+                        <p>吉卜力世界中充满了奇幻与想象力。尝试在描述中加入"漂浮在空中的小岛"、"会发光的精灵"或"机械与自然的融合"等奇幻元素，创造出更具魔力的吉卜力风格画面。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="tip-box">
+                        <div class="tip-icon">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <h3>注重情感表达</h3>
+                        <p>宫崎骏的作品总是充满情感。在描述中表达"和平与宁静"、"温馨的家庭氛围"或"冒险的激动"等情感主题，让你的画面不仅视觉上符合吉卜力风格，在情感表达上也更为丰富。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="tip-box">
+                        <div class="tip-icon">
+                            <i class="fa fa-picture-o"></i>
+                        </div>
+                        <h3>参考经典作品</h3>
+                        <p>尝试参考吉卜力经典电影中的场景风格，如《龙猫》的乡村田园、《千与千寻》的神秘浴场、《哈尔的移动城堡》的蒸汽朋克风格，或《天空之城》的浮空岛等，这些都是获得典型吉卜力风格的好方法。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题解答 -->
+    <section id="faq" class="container">
+        <div class="row text-center section-title">
+            <div class="col-md-12">
+                <h2>常见问题解答</h2>
+                <p>关于吉卜力AI生成工具的常见疑问</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="faq-item">
+                    <h3>为什么我的图像质量不理想？</h3>
+                    <p>图像质量受多种因素影响。首先，确保提供足够详细的描述。其次，尝试调整转换强度或使用不同的风格选项。最后，在排除内容中添加"模糊"、"失真"、"低质量"等词语，可以提高生成质量。</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="faq-item">
+                    <h3>如何获得更准确的吉卜力风格？</h3>
+                    <p>选择与你想要风格最接近的吉卜力电影选项，并在描述中明确提及相关元素。例如，如果选择"龙猫"风格，可以在描述中提及"乡村场景"、"自然环境"等元素；如果选择"千与千寻"，则可以提及"神秘建筑"、"奇幻生物"等。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="faq-item">
+                    <h3>我可以使用生成的图像做什么？</h3>
+                    <p>您可以将生成的图像用于个人用途，如社交媒体分享、个人艺术项目等。但请注意，商业用途可能受到限制，详情请查阅我们的使用条款。同时，请避免利用生成的作品冒充原创吉卜力工作室作品。</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="faq-item">
+                    <h3>为什么相同描述每次生成的结果不同？</h3>
+                    <p>AI生成过程中会引入随机性，以确保多样化的结果。如果您希望重现特定的生成结果，请使用"随机种子"功能。记录生成成功作品的种子值，下次使用相同的描述和种子值即可获得相似的结果。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="faq-item">
+                    <h3>上传的图片有哪些要求？</h3>
+                    <p>上传图片应当清晰，主体明确，不包含不适当内容。支持JPG、PNG格式，文件大小不超过5MB。为获得最佳效果，建议使用光线充足、主体清晰的图片，避免过于复杂或模糊的图像。</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="faq-item">
+                    <h3>生成过程需要多长时间？</h3>
+                    <p>通常情况下，生成一张图像需要10-30秒。具体时间取决于服务器负载和生成图像的复杂度。如果图像长时间未能生成，请尝试刷新页面并重新提交请求。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>吉卜力AI生成器</h3>
+                    <p>使用AI技术创造宫崎骏风格的艺术作品，让每个人都能成为吉卜力艺术家。</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">首页</a></li>
+                        <li><a href="generator.html">生成工具</a></li>
+                        <li><a href="gallery.html">作品展示</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="about.html#privacy">隐私政策</a></li>
+                        <li><a href="about.html#terms">服务条款</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>联系我们</h3>
+                    <p><i class="fa fa-envelope"></i> contact@ghibliai.com</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fa fa-weibo"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-wechat"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-qq"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="copyright text-center">
+                        <p>&copy; 2025 吉卜力AI生成器。保留所有权利。</p>
+                        <p>本站与吉卜力工作室没有任何关联。吉卜力风格仅指视觉艺术风格。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
+    <!-- 生成器专用脚本 -->
+    <script src="../js/generator.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // 处理图片上传点击事件
+            $('.upload-area').click(function() {
+                $('#imageUpload').click();
+            });
+            
+            // 处理切换到图片标签页时的验证变化
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                if (e.target.id === 'imageTab') {
+                    $('#promptText').removeAttr('required');
+                    $('#imageUpload').attr('required', 'required');
+                } else {
+                    $('#imageUpload').removeAttr('required');
+                    $('#promptText').attr('required', 'required');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

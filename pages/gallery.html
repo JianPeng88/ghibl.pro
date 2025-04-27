@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品展示 - 吉卜力风格AI</title>
+    <meta name="description" content="欣赏由我们的AI生成的吉卜力风格艺术作品集">
+    <!-- Bootstrap 3 CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 作品展示页面样式 */
+        .page-header {
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            color: white;
+            padding: 60px 0;
+            margin-top: 50px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+        
+        /* 图片网格样式 */
+        .gallery-grid {
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+        
+        .overlay-content {
+            color: white;
+            text-align: center;
+            padding: 20px;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover .overlay-content {
+            transform: translateY(0);
+        }
+        
+        .overlay-content h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        /* 筛选按钮样式 */
+        .filter-buttons {
+            margin: 30px 0;
+        }
+        
+        .filter-btn {
+            margin: 0 5px;
+            border-radius: 30px;
+            padding: 8px 20px;
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            color: white;
+            border: none;
+        }
+        
+        /* 灯箱效果 */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            text-align: center;
+        }
+        
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-lightbox:hover {
+            color: #3a7bd5;
+        }
+        
+        .lightbox-content {
+            max-width: 80%;
+            max-height: 80vh;
+            margin-top: 10vh;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        #lightboxCaption {
+            color: white;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        
+        /* 语言切换和亮暗模式按钮样式 */
+        .language-theme-toggle {
+            margin-left: 15px;
+        }
+        
+        .language-check {
+            margin-right: 5px;
+            opacity: 0;
+        }
+        
+        .language-item.active .language-check {
+            opacity: 1;
+        }
+        
+        .dark-mode {
+            background-color: #222;
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .navbar-default {
+            background-color: #333;
+            border-color: #444;
+        }
+        
+        .dark-mode .navbar-default .navbar-brand,
+        .dark-mode .navbar-default .navbar-nav > li > a {
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .navbar-default .navbar-nav > .active > a,
+        .dark-mode .navbar-default .navbar-nav > .active > a:focus,
+        .dark-mode .navbar-default .navbar-nav > .active > a:hover {
+            background-color: #444;
+            color: #fff;
+        }
+        
+        .dark-mode .page-header {
+            background: linear-gradient(135deg, #2a5a9c, #00b0da);
+        }
+        
+        .dark-mode .gallery-item {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        
+        .dark-mode .filter-btn {
+            background: #444;
+            color: #f0f0f0;
+            border-color: #555;
+        }
+        
+        .dark-mode .filter-btn.active {
+            background: linear-gradient(45deg, #2a5a9c, #00b0da);
+        }
+        
+        .dark-mode footer {
+            background-color: #222;
+            color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">
+                    <img src="../img/logo.svg" alt="吉卜力AI" class="logo-img">
+                    吉卜力AI生成器
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../index.html" data-lang-key="nav.home">首页</a></li>
+                    <li><a href="../index.html#generator-section" data-lang-key="nav.generator">生成工具</a></li>
+                    <li class="active"><a href="gallery.html" data-lang-key="nav.gallery">作品展示</a></li>
+                    <li><a href="about.html" data-lang-key="nav.about">关于我们</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right language-theme-toggle">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-globe"></i> <span class="language-text">中文</span> <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu language-dropdown">
+                            <li><a href="#" data-lang="en" class="language-item"><i class="fa fa-check language-check en-check"></i> English</a></li>
+                            <li><a href="#" data-lang="zh" class="language-item active"><i class="fa fa-check language-check zh-check"></i> 中文</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" id="theme-toggle">
+                            <i class="fa fa-moon-o"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <header class="page-header">
+        <div class="container">
+            <h1 data-lang-key="gallery.title">吉卜力风格作品展示</h1>
+            <p data-lang-key="gallery.subtitle">欣赏由AI生成的宫崎骏风格艺术作品</p>
+        </div>
+    </header>
+
+    <!-- 筛选按钮 -->
+    <section id="gallery-filter" class="container">
+        <div class="row filter-buttons text-center">
+            <div class="col-md-12">
+                <button class="btn filter-btn active" data-filter="all" data-lang-key="gallery.all">全部作品</button>
+                <button class="btn filter-btn" data-filter="totoro" data-lang-key="gallery.totoro">龙猫风格</button>
+                <button class="btn filter-btn" data-filter="spirited" data-lang-key="gallery.spirited">千与千寻风格</button>
+                <button class="btn filter-btn" data-filter="howl" data-lang-key="gallery.howl">哈尔的移动城堡风格</button>
+                <button class="btn filter-btn" data-filter="other" data-lang-key="gallery.other">其他风格</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品展示区 -->
+    <section id="gallery" class="container">
+        <div class="row gallery-grid">
+            <!-- 第一行 -->
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-totoro">
+                    <img src="../img/gallery/龙猫风格作品.jpg" alt="龙猫风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>龙猫风格转换</h4>
+                            <p>山林自然景观的龙猫风格呈现</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-spirited">
+                    <img src="../img/gallery/千与千寻风格作品.jpg" alt="千与千寻风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>千与千寻风格</h4>
+                            <p>神秘浪漫的千与千寻场景</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-howl">
+                    <img src="../img/gallery/哈尔的移动城堡风格作品.jpg" alt="哈尔的移动城堡风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>哈尔的移动城堡</h4>
+                            <p>充满魔法的梦幻建筑</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二行 -->
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-other">
+                    <img src="../img/gallery/吉卜力风格作品1.jpg" alt="吉卜力风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>自然风景转换</h4>
+                            <p>宁静的自然景色吉卜力呈现</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-totoro">
+                    <img src="../img/gallery/龙猫风格作品2.jpg" alt="龙猫风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>温馨家庭场景</h4>
+                            <p>龙猫风格的家庭日常</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-spirited">
+                    <img src="../img/gallery/千与千寻风格作品2.jpg" alt="千与千寻风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>幻想世界</h4>
+                            <p>千与千寻风格的奇幻场景</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三行 -->
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-howl">
+                    <img src="../img/gallery/哈尔的移动城堡风格作品2.jpg" alt="哈尔的移动城堡风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>机械与魔法</h4>
+                            <p>哈尔城堡风格的机械世界</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-other">
+                    <img src="../img/gallery/吉卜力风格作品2.jpg" alt="吉卜力风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>城市街景</h4>
+                            <p>吉卜力风格的城市场景</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-totoro">
+                    <img src="../img/gallery/龙猫风格作品3.jpg" alt="龙猫风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>雨中的宁静</h4>
+                            <p>龙猫风格的雨景场景</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第四行 -->
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-spirited">
+                    <img src="../img/gallery/千与千寻风格作品3.jpg" alt="千与千寻风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>神秘角色</h4>
+                            <p>千与千寻风格的角色转换</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-howl">
+                    <img src="../img/gallery/哈尔的移动城堡风格作品3.jpg" alt="哈尔的移动城堡风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>飞行之梦</h4>
+                            <p>哈尔风格的梦幻天空</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item filter-other">
+                    <img src="../img/gallery/吉卜力风格作品3.jpg" alt="吉卜力风格作品" class="img-responsive">
+                    <div class="overlay">
+                        <div class="overlay-content">
+                            <h4>四季变换</h4>
+                            <p>吉卜力风格的季节场景</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 灯箱效果 -->
+    <div class="lightbox" id="imageLightbox">
+        <span class="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightboxImage">
+        <div id="lightboxCaption"></div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>吉卜力AI生成器</h3>
+                    <p data-lang-key="footer.description">使用AI技术创造宫崎骏风格的艺术作品，让每个人都能成为吉卜力艺术家。</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fa fa-weibo"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-wechat"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3 data-lang-key="footer.quicklinks">快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="../index.html" data-lang-key="nav.home">首页</a></li>
+                        <li><a href="../index.html#generator-section" data-lang-key="nav.generator">生成工具</a></li>
+                        <li><a href="gallery.html" data-lang-key="nav.gallery">作品展示</a></li>
+                        <li><a href="about.html" data-lang-key="nav.about">关于我们</a></li>
+                        <li><a href="about.html#privacy" data-lang-key="footer.privacy">隐私政策</a></li>
+                        <li><a href="about.html#terms" data-lang-key="footer.terms">服务条款</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3 data-lang-key="footer.contact">联系我们</h3>
+                    <p><i class="fa fa-envelope"></i> contact@ghibliai.com</p>
+                    <p><i class="fa fa-phone"></i> +86 123 4567 8900</p>
+                    <p><i class="fa fa-map-marker"></i> 北京市朝阳区创意园区A座</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="copyright text-center">
+                        <p>&copy; 2023 吉卜力AI生成器。<span data-lang-key="footer.copyright">保留所有权利。</span></p>
+                        <p data-lang-key="footer.disclaimer">本站与吉卜力工作室没有任何关联。吉卜力风格仅指视觉艺术风格。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <a href="#" class="back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+    <!-- JavaScript库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <!-- 作品展示页面脚本 -->
+    <script>
+        $(document).ready(function() {
+            // 筛选功能
+            $('.filter-btn').on('click', function() {
+                const filterValue = $(this).data('filter');
+                
+                // 更新按钮状态
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                if (filterValue === 'all') {
+                    $('.gallery-item').show();
+                } else {
+                    $('.gallery-item').hide();
+                    $('.filter-' + filterValue).show();
+                }
+            });
+            
+            // 灯箱功能
+            $('.gallery-item').on('click', function() {
+                const imgSrc = $(this).find('img').attr('src');
+                const caption = $(this).find('h4').text() + ' - ' + $(this).find('p').text();
+                
+                $('#lightboxImage').attr('src', imgSrc);
+                $('#lightboxCaption').text(caption);
+                $('#imageLightbox').fadeIn();
+            });
+            
+            $('.close-lightbox').on('click', function() {
+                $('#imageLightbox').fadeOut();
+            });
+            
+            // 点击灯箱外部区域关闭
+            $(document).on('click', function(e) {
+                if ($(e.target).is('#imageLightbox')) {
+                    $('#imageLightbox').fadeOut();
+                }
+            });
+            
+            // 键盘导航
+            $(document).keyup(function(e) {
+                if (e.key === "Escape") {
+                    $('#imageLightbox').fadeOut();
+                }
+            });
+        });
+    </script>
+
+    <!-- 语言切换和暗模式切换功能 -->
+    <script>
+        // 语言切换和暗模式切换功能
+        $(document).ready(function() {
+            // 亮暗模式切换
+            $('#theme-toggle').click(function(e) {
+                e.preventDefault();
+                $('body').toggleClass('dark-mode');
+                
+                // 切换图标
+                var icon = $(this).find('i');
+                if (icon.hasClass('fa-moon-o')) {
+                    icon.removeClass('fa-moon-o').addClass('fa-sun-o');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    icon.removeClass('fa-sun-o').addClass('fa-moon-o');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
+            // 检查用户之前的主题选择
+            if (localStorage.getItem('theme') === 'dark') {
+                $('body').addClass('dark-mode');
+                $('#theme-toggle i').removeClass('fa-moon-o').addClass('fa-sun-o');
+            }
+            
+            // 语言切换功能
+            $('.language-item').click(function(e) {
+                e.preventDefault();
+                var lang = $(this).data('lang');
+                
+                // 保存语言选择
+                localStorage.setItem('language', lang);
+                
+                // 更新UI
+                $('.language-item').removeClass('active');
+                $(this).addClass('active');
+                $('.language-text').text(lang === 'en' ? 'English' : '中文');
+                
+                // 切换语言显示
+                toggleLanguage(lang);
+            });
+            
+            // 初始化语言
+            var savedLang = localStorage.getItem('language') || 'zh';
+            if (savedLang === 'en') {
+                $('.language-item[data-lang="en"]').addClass('active');
+                $('.language-item[data-lang="zh"]').removeClass('active');
+                $('.language-text').text('English');
+                toggleLanguage('en');
+            }
+        });
+        
+        // 语言切换函数现在调用lang.js中的函数
+        function toggleLanguage(lang) {
+            // 调用lang.js中定义的函数
+            if (typeof window.toggleLanguage === 'function') {
+                window.toggleLanguage(lang);
+            } else {
+                console.error('Language toggle function not found. Make sure lang.js is loaded.');
+            }
+        }
+    </script>
+
+    <!-- 添加lang.js引用 -->
+    <script src="../js/lang.js"></script>
+</body>
+</html> 
